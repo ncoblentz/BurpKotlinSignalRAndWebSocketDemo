@@ -5,14 +5,17 @@ import burp.api.montoya.proxy.http.InterceptedRequest
 import burp.api.montoya.proxy.http.ProxyRequestHandler
 import burp.api.montoya.proxy.http.ProxyRequestReceivedAction
 import burp.api.montoya.proxy.http.ProxyRequestToBeSentAction
+import burp.api.montoya.ui.editor.extension.EditorCreationContext
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor
+import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider
 import burp.api.montoya.utilities.json.JsonNode
-import com.nickcoblentz.montoya.appendNotes
+import com.nickcoblentz.montoya.appendNote
 
 
 // Montoya API Documentation: https://portswigger.github.io/burp-extensions-montoya-api/javadoc/burp/api/montoya/MontoyaApi.html
 // Montoya Extension Examples: https://github.com/PortSwigger/burp-extensions-montoya-api-examples
 
-class SignalRAndWebSocketExtension : BurpExtension, ProxyRequestHandler {
+class SignalRAndWebSocketExtension : BurpExtension, ProxyRequestHandler, HttpRequestEditorProvider {
     private lateinit var api: MontoyaApi
 
     override fun initialize(api: MontoyaApi?) {
@@ -35,6 +38,7 @@ class SignalRAndWebSocketExtension : BurpExtension, ProxyRequestHandler {
         // Code for setting up your extension starts here...
 
         api.proxy().registerRequestHandler(this)
+        api.userInterface().registerHttpRequestEditorProvider(this)
 
         // Code for setting up your extension ends here
 
@@ -58,18 +62,23 @@ class SignalRAndWebSocketExtension : BurpExtension, ProxyRequestHandler {
                 if (json.has("H")) {
                     api.logging().logToOutput("Found H")
                     val hub = json["H"].asString()
-                    it.annotations().appendNotes("Hub=$hub");
+                    it.annotations().appendNote("Hub=$hub")
                 }
 
                 if (json.has("M")) {
                     api.logging().logToOutput("Found M")
                     val method = json["M"].asString()
-                    it.annotations().appendNotes("Method=$method");
+                    it.annotations().appendNote("Method=$method")
                 }
                 api.logging().logToOutput("done appending notes")
             }
         }
         api.logging().logToOutput("returning")
         return ProxyRequestToBeSentAction.continueWith(interceptedRequest)
+    }
+
+    override fun provideHttpRequestEditor(creationContext: EditorCreationContext?): ExtensionProvidedHttpRequestEditor {
+        return SignalRProvidedHttpRequestEditor(api, creationContext)
+
     }
 }

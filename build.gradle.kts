@@ -25,6 +25,9 @@ dependencies {
     // Check for latest version: https://central.sonatype.com/artifact/net.portswigger.burp.extensions/montoya-api/versions
     implementation("net.portswigger.burp.extensions:montoya-api:2024.7")
 
+    // Added the org.json library to be able to parse JSON
+    // https://central.sonatype.com/artifact/org.json/json
+    implementation("org.json:json:20240303")
 }
 
 tasks.test {

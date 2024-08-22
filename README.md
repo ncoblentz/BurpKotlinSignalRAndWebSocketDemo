@@ -122,3 +122,27 @@ return "";
 
 ![BambdaColumnWebsocket.png](Documentation/BambdaColumns/BambdaColumnWebsocket.png)
 
+### Extension
+
+#### Annotations With Kotlin Monkey Patching
+
+The following screenshots and code demonstrate:
+1. Adding the `appendNote()` method to the external library [`burp.api.montoya.core.Annotations`](https://portswigger.github.io/burp-extensions-montoya-api/javadoc/burp/api/montoya/core/Annotations.html). This library previously only had a `setNotes()` method.
+    - See [AnnotationsPatch.kt](src/main/kotlin/AnnotationsPatch.kt)
+2. Extracting specific JSON data from SignalR HTTP requests and displaying it in the "Notes" column for the HTTP proxy history
+    - See [SignalRAndWebSocketExtension.kt](src/main/kotlin/SignalRAndWebSocketExtension.kt)#handleRequestToBeSent
+
+![SignalRAnnotations.png](Documentation/Extension/SignalRAnnotations.png)
+
+### HttpMessageEditor Tab For SignalR Data
+
+The following screenshots and code demonstrate:
+1. Creating a new Tab for HTTP Requests that decodes, parses, and beautifies the URL encoded JSON within the `data` URL parameter
+    - See [SignalRProvidedHttpRequestEditor.kt](src/main/kotlin/SignalRProvidedHttpRequestEditor.kt) and [SignalRAndWebSocketExtension.kt](src/main/kotlin/SignalRAndWebSocketExtension.kt)
+
+![SignalRHttpRequestEditorInProxy.png](Documentation/Extension/SignalRHttpRequestEditorInProxy.png)
+
+![SignalRHttpRequestEditorInRepeater1.png](Documentation/Extension/SignalRHttpRequestEditorInRepeater1.png)
+
+![SignalRHttpRequestEditorInRepeater2.png](Documentation/Extension/SignalRHttpRequestEditorInRepeater2.png)
+
