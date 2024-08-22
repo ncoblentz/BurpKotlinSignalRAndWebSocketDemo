@@ -138,7 +138,7 @@ The following screenshots and code demonstrate:
 
 The following screenshots and code demonstrate:
 1. Creating a new Tab for HTTP Requests that decodes, parses, and beautifies the URL encoded JSON within the `data` URL parameter
-    - See [SignalRProvidedHttpRequestEditor.kt](src/main/kotlin/SignalRProvidedHttpRequestEditor.kt) and [SignalRAndWebSocketExtension.kt](src/main/kotlin/SignalRAndWebSocketExtension.kt)
+    - See [SignalRProvidedHttpRequestEditor.kt](src/main/kotlin/SignalRProvidedHttpRequestEditor.kt)
 
 ![SignalRHttpRequestEditorInProxy.png](Documentation/Extension/SignalRHttpRequestEditorInProxy.png)
 

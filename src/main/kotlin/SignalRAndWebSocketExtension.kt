@@ -37,7 +37,13 @@ class SignalRAndWebSocketExtension : BurpExtension, ProxyRequestHandler, HttpReq
 
         // Code for setting up your extension starts here...
 
+        // This line tells Burp Suite to send all Proxy Requests to this class, and the following methods:
+        // - handleRequestReceived
+        // - handleRequestToBeSent
         api.proxy().registerRequestHandler(this)
+
+        // This line tells Burp Suite to create a new Tab when viewing HTTP Requests.
+        // It calls provideHttpRequestEditor
         api.userInterface().registerHttpRequestEditorProvider(this)
 
         // Code for setting up your extension ends here
@@ -46,12 +52,16 @@ class SignalRAndWebSocketExtension : BurpExtension, ProxyRequestHandler, HttpReq
         api.logging().logToOutput("...Finished loading the extension")
 
     }
-    
+
+    // This method is called first, but we choose not to take any action here
+    // We would rather annotate the final request after it's been modified through interception
     override fun handleRequestReceived(interceptedRequest: InterceptedRequest?): ProxyRequestReceivedAction {
         return ProxyRequestReceivedAction.continueWith(interceptedRequest)
     }
 
+    // This method is called second, and it is where we want to parse the JSON and annotate the item in the proxy history
     override fun handleRequestToBeSent(interceptedRequest: InterceptedRequest?): ProxyRequestToBeSentAction {
+        //Check for null, if its not null, operate on the data using this block and the variable `it`
         interceptedRequest?.let {
             api.logging().logToOutput("Intercept request")
             if(it.hasParameter("data", HttpParameterType.URL)) {
@@ -77,6 +87,7 @@ class SignalRAndWebSocketExtension : BurpExtension, ProxyRequestHandler, HttpReq
         return ProxyRequestToBeSentAction.continueWith(interceptedRequest)
     }
 
+    // Return a new HTTP Request Editor
     override fun provideHttpRequestEditor(creationContext: EditorCreationContext?): ExtensionProvidedHttpRequestEditor {
         return SignalRProvidedHttpRequestEditor(api, creationContext)
 

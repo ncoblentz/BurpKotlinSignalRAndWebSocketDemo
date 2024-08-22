@@ -18,6 +18,8 @@ class SignalRProvidedHttpRequestEditor(private val api: MontoyaApi, creationCont
     private var data = ""
     private var httpRequestResponse : HttpRequestResponse? = null
 
+
+    // Check to see if the editor should allow modification of the content (proxy vs. repeater for example)
     init {
         if(creationContext?.editorMode()?.equals(EditorMode.READ_ONLY) == true)
             signalrDataEditor = api.userInterface().createRawEditor(EditorOptions.READ_ONLY)
@@ -25,6 +27,9 @@ class SignalRProvidedHttpRequestEditor(private val api: MontoyaApi, creationCont
             signalrDataEditor = api.userInterface().createRawEditor()
     }
 
+    // Save the latest HTTP request and response in class instance variables
+    // Parse and beautify the `data` parameter if present and store it in a class instance variable
+    // Set the HTTP editor's content with that value
     override fun setRequestResponse(newHttpRequestResponse: HttpRequestResponse?) {
         httpRequestResponse = newHttpRequestResponse
         data=""
@@ -35,9 +40,15 @@ class SignalRProvidedHttpRequestEditor(private val api: MontoyaApi, creationCont
             api.logging().logToOutput("JSON Data: $data")
         }
         api.logging().logToOutput("Exited looking for data")
+
+        // Set the editor content's data here
         signalrDataEditor.contents = burp.api.montoya.core.ByteArray.byteArray(data)
     }
 
+    // When should we show the text editor. The criteria below checks:
+    // - the HTTP request isn't null
+    // - it includes a "transport" parameter with value "longPolling"
+    // - it has a "data" parameter
     override fun isEnabledFor(httpRequestResponse: HttpRequestResponse?): Boolean {
         httpRequestResponse?.request()?.let {
             return it.hasParameter("transport",HttpParameterType.URL) &&
@@ -47,24 +58,29 @@ class SignalRProvidedHttpRequestEditor(private val api: MontoyaApi, creationCont
         return false
     }
 
+    // Set the name of the tab
     override fun caption(): String {
         return "SignalR Data"
     }
 
+    // Return the Swing Component to Burp
     override fun uiComponent(): Component {
         return signalrDataEditor.uiComponent()
     }
 
+    // Provide the selected (highlighted) data when asked for
     override fun selectedData(): Selection? {
         return if (signalrDataEditor.selection().isPresent) signalrDataEditor.selection().get() else null
 
     }
 
+    // Did the user modify the content inside the text editor?
     override fun isModified(): Boolean {
         return signalrDataEditor.isModified
     }
 
-    override fun getRequest(): HttpRequest {
+    // When it's time to send the request or a user clicks on another tab, we need to process any changes and update the HTTP request
+    override fun getRequest(): HttpRequest? {
 
         val request: HttpRequest?
 
@@ -75,7 +91,8 @@ class SignalRProvidedHttpRequestEditor(private val api: MontoyaApi, creationCont
         else
             request=httpRequestResponse?.request()
 
-        return request!!
+
+        return request
     }
 
 }
