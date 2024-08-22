@@ -24,6 +24,7 @@ dependencies {
     // https://central.sonatype.com/artifact/net.portswigger.burp.extensions/montoya-api
     // Check for latest version: https://central.sonatype.com/artifact/net.portswigger.burp.extensions/montoya-api/versions
     implementation("net.portswigger.burp.extensions:montoya-api:2024.7")
+
 }
 
 tasks.test {
