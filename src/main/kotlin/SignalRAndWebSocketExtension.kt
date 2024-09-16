@@ -27,9 +27,6 @@ class SignalRAndWebSocketExtension : BurpExtension, ProxyRequestHandler, HttpReq
         // Finally, assign the MontoyaApi instance (not nullable) to a class property to be accessible from other functions in this class
         this.api = requireNotNull(api) { "api : MontoyaApi is not allowed to be null" }
 
-        // Assign the MontoyaApi instance (not nullable) to a class instance variable to be accessible from other functions in this class
-        this.api = api
-
         // This will print to Burp Suite's Extension output and can be used to debug whether the extension loaded properly
         api.logging().logToOutput("Started loading the extension...")
 
