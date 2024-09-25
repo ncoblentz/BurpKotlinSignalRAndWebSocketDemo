@@ -15,6 +15,14 @@ repositories {
     mavenLocal()
 
     mavenCentral()
+
+    //Add two specific GitHub repositories in which maven packages can be found through jitpack.io
+    maven(url="https://jitpack.io") {
+        content {
+            includeGroup("com.github.milchreis")
+            includeGroup("com.github.ncoblentz")
+        }
+    }
 }
 
 dependencies {
@@ -28,6 +36,10 @@ dependencies {
     // Added the org.json library to be able to parse JSON
     // https://central.sonatype.com/artifact/org.json/json
     implementation("org.json:json:20240303")
+
+    // Include https://github.com/ncoblentz/BurpMontoyaLibrary
+    implementation("com.github.ncoblentz:BurpMontoyaLibrary:0.1.27")
+    implementation("com.github.milchreis:uibooster:1.21.1")
 }
 
 tasks.test {

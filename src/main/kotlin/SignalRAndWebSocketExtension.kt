@@ -9,7 +9,7 @@ import burp.api.montoya.ui.editor.extension.EditorCreationContext
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor
 import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider
 import burp.api.montoya.utilities.json.JsonNode
-import com.nickcoblentz.montoya.appendNote
+import com.nickcoblentz.montoya.appendNotes
 
 
 // Montoya API Documentation: https://portswigger.github.io/burp-extensions-montoya-api/javadoc/burp/api/montoya/MontoyaApi.html
@@ -70,13 +70,13 @@ class SignalRAndWebSocketExtension : BurpExtension, ProxyRequestHandler, HttpReq
                 if (json.has("H")) {
                     api.logging().logToOutput("Found H")
                     val hub = json["H"].asString()
-                    it.annotations().appendNote("Hub=$hub")
+                    it.annotations().appendNotes("Hub=$hub")
                 }
 
                 if (json.has("M")) {
                     api.logging().logToOutput("Found M")
                     val method = json["M"].asString()
-                    it.annotations().appendNote("Method=$method")
+                    it.annotations().appendNotes("Method=$method")
                 }
                 api.logging().logToOutput("done appending notes")
             }
