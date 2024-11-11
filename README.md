@@ -1,5 +1,9 @@
 # Kotlin Burp SignalR and WebSocket Demo
 
+_By [Nick Coblentz](https://www.linkedin.com/in/ncoblentz/)_
+
+__This Burp Extension is made possible by [Virtue Security](https://www.virtuesecurity.com), the Application Penetration Testing consulting company I work for.__
+
 This project demonstrates how to:
 1. Use Bambdas to filter proxy history
 2. Use Bambdas in HTTP proxy history columns to extract SignalR data
